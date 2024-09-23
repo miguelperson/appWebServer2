@@ -32,7 +32,7 @@ const sandBatterySchema = new mongoose.Schema({
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
 
 app.post('/newBattery', async (req, res) => {
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomtTemp, heatingRoom, ChargingBoolean } = req.body;
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
     const additionalBattery = new SandBattery({
         batteryID,
         currentRoomTemp,
