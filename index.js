@@ -33,7 +33,7 @@ const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatter
 
 app.post('/newBattery', async (req, res) => {
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomtTemp, heatingRoom, ChargingBoolean } = req.body;
-    const newBattery = new SandBattery({
+    const additionalBattery = new SandBattery({
         batteryID,
         currentRoomTemp,
         currentInternalTemp,
@@ -42,7 +42,7 @@ app.post('/newBattery', async (req, res) => {
         ChargingBoolean
     });
     try {
-        await newBattery.save();
+        await additionalBattery.save();
         return res.status(201).json({ message: 'battery registered' });
     } catch (error) {
         return res.status(500).json({ message: 'Error registering user', error });
