@@ -21,6 +21,35 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema, 'users');  // Explicitly set collection name
 
+const sandBatterySchema = new mongoose.Schema({
+    batteryID: String, // unique identifier for sand storage
+    currentRoomTemp: Number, // ESP32 using DHT11's for reading external room temp
+    currentInternalTemp: Number, // ESP32 reading insulated sand temperature
+    setRoomTemp: Number, // desired room temperature to heat to
+    heatingRoom: Boolean, // whether the sand thermal storage is currently heating the room or not
+    ChargingBoolean: Boolean // whether the sand is currently being heated
+});
+const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
+
+app.post('/newBattery', async (req, res) => {
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomtTemp, heatingRoom, ChargingBoolean } = req.body;
+    const newBattery = new SandBattery({
+        batteryID,
+        currentRoomTemp,
+        currentInternalTemp,
+        setRoomTemp,
+        heatingRoom,
+        ChargingBoolean
+    });
+    try {
+        await newBattery.save();
+        return res.status(201).json({ message: 'battery registered' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error registering user', error });
+    }
+});
+
+
 // post route from the registration page
 app.post('/register', async (req, res) => {
     const { email, password } = req.body;
@@ -37,7 +66,7 @@ app.post('/register', async (req, res) => {
     });
 
     try {
-        await newUser.save();
+        await newUser.save(); // saves new user to database
         return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         return res.status(500).json({ message: 'Error regsitering user', error });
