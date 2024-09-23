@@ -48,7 +48,7 @@ app.post('/register', async (req, res) => {
 
 // Test GET route (to verify if the server is responding)
 app.get('/test', (req, res) => {
-    res.send('Server is reachable and running');
+    res.send('Server is reachable and running BUTT STUFF');
 });
 
 app.post('/login', async (req, res) => {
