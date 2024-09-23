@@ -31,7 +31,7 @@ const sandBatterySchema = new mongoose.Schema({
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
 
-app.post('/newBattery', async (req, res) => {
+app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WROOM-32 to register
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
     const additionalBattery = new SandBattery({
         batteryID,
@@ -47,6 +47,13 @@ app.post('/newBattery', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: 'Error registering user', error });
     }
+});
+
+app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+
+    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
+
 });
 
 
