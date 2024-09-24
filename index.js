@@ -128,7 +128,7 @@ app.post('/login', async (req, res) => {
         return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    return res.status(200).json({ message: 'Login successful', email: user.cleanedEmail }); // returning the user email as well
+    return res.status(200).json({ message: 'Login successful', email: user.email }); // returning the user email as well
 });
 
 // Start the server
