@@ -27,7 +27,16 @@ const sandBatterySchema = new mongoose.Schema({
     currentInternalTemp: Number, // ESP32 reading insulated sand temperature
     setRoomTemp: Number, // desired room temperature to heat to
     heatingRoom: Boolean, // whether the sand thermal storage is currently heating the room or not
-    ChargingBoolean: Boolean // whether the sand is currently being heated
+    ChargingBoolean: Boolean, // whether the sand is currently being heated
+    startChargingHour: Number,
+    endChargingHour: Number,
+    startHeatingHour: Number,
+    endHeatingHour: Number,
+    startChargingMinute: Number,
+    stopChargingMinute: Number,
+    startHeatingMinute: Number,
+    stopHeatingMinute: Number
+
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
 
