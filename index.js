@@ -58,12 +58,12 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
     }
 });
 
-app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+//app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
+//    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+//
+//    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
 
-    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
-
-});
+//});
 
 
 // post route from the registration page
