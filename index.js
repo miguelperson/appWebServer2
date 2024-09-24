@@ -17,7 +17,8 @@ mongoose.connect('mongodb+srv://mbacaurteaga:Mabu070899@esapptest1.4nbg7.mongodb
 // User schema
 const userSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String,
+    thermalStorageUnits: [String]
 });
 const User = mongoose.model('User', userSchema, 'users');  // Explicitly set collection name
 
@@ -127,7 +128,7 @@ app.post('/login', async (req, res) => {
         return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    return res.status(200).json({ message: 'Login successful' });
+    return res.status(200).json({ message: 'Login successful', email: user.cleanedEmail }); // returning the user email as well
 });
 
 // Start the server
