@@ -41,14 +41,22 @@ const sandBatterySchema = new mongoose.Schema({
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
 
 app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WROOM-32 to register
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, startChargingHour, endChargingHour, startHeatingHour, endHeatingHour, startChargingMinute, stopChargingMinute, startHeatingMInute, stopHeatingMinute } = req.body;
     const additionalBattery = new SandBattery({
         batteryID,
         currentRoomTemp,
         currentInternalTemp,
         setRoomTemp,
         heatingRoom,
-        ChargingBoolean
+        ChargingBoolean,
+        startChargingHour,
+        endChargingHour,
+        startHeatingHour,
+        endHeatingHour,
+        startChargingMinute,
+        stopChargingMinute,
+        startHeatingMInute,
+        stopHeatingMinute
     });
     try {
         await additionalBattery.save();
