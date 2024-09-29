@@ -40,7 +40,6 @@ const sandBatterySchema = new mongoose.Schema({
     heatingToggleFlag: Number,
     chargingToggleFlag: Number
     // going to want to add toggle flags for the sand battery
-
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
 
@@ -69,6 +68,22 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
         return res.status(500).json({ message: 'Error registering user', error });
     }
 });
+
+// Check if batteryID already exists
+app.get('/checkBattery', async (req, res) => {
+    const { batteryID } = req.query; // Get batteryID from the query string
+    try {
+        const existingBattery = await SandBattery.findOne({ batteryID });
+        if (existingBattery) {
+            return res.status(200).json({ exists: true });
+        } else {
+            return res.status(200).json({ exists: false });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error searching for battery', error });
+    }
+});
+
 
 //app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
 //    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
