@@ -36,7 +36,10 @@ const sandBatterySchema = new mongoose.Schema({
     startChargingMinute: Number,
     stopChargingMinute: Number,
     startHeatingMinute: Number,
-    stopHeatingMinute: Number
+    stopHeatingMinute: Number,
+    heatingToggleFlag: Number,
+    chargingToggleFlag: Number
+    // going to want to add toggle flags for the sand battery
 
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
