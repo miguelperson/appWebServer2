@@ -85,15 +85,33 @@ app.get('/checkBattery', async (req, res) => {
 });
 
 
-app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body; // recieved from the ESP32
+app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
 
-    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
+    try {
+        // Find the existing battery by batteryID
+        const existingBattery = await SandBattery.findOne({ batteryID });
 
-    if (currentRoomTemp !== undefined) { // if currentRoomTemp exists
-        existingBattery.currentRoomTemp = currentInternalTemp; // setting existing battery internal temp to the value given by the ESP32
+        if (existingBattery) {
+            // Update the values
+            if (currentRoomTemp !== undefined) existingBattery.currentRoomTemp = currentRoomTemp;
+            if (currentInternalTemp !== undefined) existingBattery.currentInternalTemp = currentInternalTemp;
+            if (setRoomTemp !== undefined) existingBattery.setRoomTemp = setRoomTemp;
+            if (heatingRoom !== undefined) existingBattery.heatingRoom = heatingRoom;
+            if (ChargingBoolean !== undefined) existingBattery.ChargingBoolean = ChargingBoolean;
+
+            // Save the updated battery back to the database
+            await existingBattery.save();
+
+            return res.status(200).json({ message: 'Battery updated successfully' });
+        } else {
+            return res.status(404).json({ message: 'Battery not found' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error updating battery', error });
     }
 });
+
 
 // post route from the registration page
 app.post('/register', async (req, res) => {
