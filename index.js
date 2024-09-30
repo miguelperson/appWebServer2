@@ -85,13 +85,15 @@ app.get('/checkBattery', async (req, res) => {
 });
 
 
-//app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
-//    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
-//
-//    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
+app.updateOne('/batteryUpdate', async (req, res) => { // updating values of ESP32
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body; // recieved from the ESP32
 
-//});
+    const existingBattery = await SandBattery.findOne({ batteryID }); // checks if battery already exists
 
+    if (currentRoomTemp !== undefined) { // if currentRoomTemp exists
+        existingBattery.currentRoomTemp = currentInternalTemp; // setting existing battery internal temp to the value given by the ESP32
+    }
+});
 
 // post route from the registration page
 app.post('/register', async (req, res) => {
