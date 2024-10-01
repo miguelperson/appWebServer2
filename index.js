@@ -79,6 +79,15 @@ app.post('/registerBattery', async (req, res) => {
         if (existingBattery) {
             const cleanedEmail = userAccount.trim().toLowerCase();
             const existingUser = await User.findOne({ cleanedEmail }); // searches for user
+            if (existingUser) {
+                existingUser.thermalStorageUnits = batteryID;
+                existingBattery.name = name;
+                await existingUser.save();
+                await existingBattery.save();
+                return res.status(200).json({ message: 'Battery Successfully Registered' });
+            }
+        } else {
+            return res.status(500).json({message: 'Battery Not Found'})
         }
     }
 });
