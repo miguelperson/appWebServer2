@@ -87,6 +87,18 @@ app.get('/checkBattery', async (req, res) => {
 });
 
 app.post('/appHeatToggle', async (req, res) => { // toggle for the 
+    const { batteryID, chargingToggleFlag } = req.body; // given ID to find and then given the value for the toggle flag
+    const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
+    if (existingBattery) {
+        existingBattery.chargingToggleFlag = !existingBattery.chargingToggleFlag; // toggle the heating flag
+        await existingBattery.save();
+        return res.status(200).json({ message: 'toggle set to:' + existingBattery.chargingToggleFlag });
+    } else {
+        return res.status(500).json({ message: ' unable to find the battery' });
+    }
+});
+
+app.post('/appChargingToggle', async (req, res) => { // toggle for the 
     const { batteryID, heatingToggleFlag } = req.body; // given ID to find and then given the value for the toggle flag
     const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
     if (existingBattery) {
