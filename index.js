@@ -18,7 +18,7 @@ mongoose.connect('mongodb+srv://mbacaurteaga:Mabu070899@esapptest1.4nbg7.mongodb
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
-    thermalStorageUnits: [String]
+    thermalStorageUnits: String
 });
 const User = mongoose.model('User', userSchema, 'users');  // Explicitly set collection name
 
@@ -73,7 +73,14 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
 
 app.post('/registerBattery', async (req, res) => {
     const { name, batteryID, userAccount } = req.body;
-    console.log(name + batteryID + userAccount);
+    // console.log(name + batteryID + userAccount);
+    try {
+        const existingBattery = await SandBattery.findOne({ batteryID }); // checking if battery exists
+        if (existingBattery) {
+            const cleanedEmail = userAccount.trim().toLowerCase();
+            const existingUser = await User.findOne({ cleanedEmail }); // searches for user
+        }
+    }
 });
 
 // Check if batteryID already exists
