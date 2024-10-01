@@ -37,8 +37,8 @@ const sandBatterySchema = new mongoose.Schema({
     stopChargingMinute: Number,
     startHeatingMinute: Number,
     stopHeatingMinute: Number,
-    heatingToggleFlag: Number,
-    chargingToggleFlag: Number
+    heatingToggleFlag: Boolean,
+    chargingToggleFlag: Boolean
     // going to want to add toggle flags for the sand battery
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
@@ -59,7 +59,9 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
         startChargingMinute,
         stopChargingMinute,
         startHeatingMInute,
-        stopHeatingMinute
+        stopHeatingMinute,
+        heatingToggleFlag,
+        chargingToggleFlag
     });
     try {
         await additionalBattery.save();
@@ -84,6 +86,17 @@ app.get('/checkBattery', async (req, res) => {
     }
 });
 
+app.post('/appHeatToggle', async (req, res) => { // toggle for the 
+    const { batteryID, heatingToggleFlag } = req.body; // given ID to find and then given the value for the toggle flag
+    const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
+    if (existingBattery) {
+        existingBattery.heatingToggleFlag = !existingBattery.heatingToggleFlag; // toggle the heating flag
+        await existingBattery.save();
+        return res.status(200).json({ message: 'toggle set to:' + existingBattery.heatingToggleFlag });
+    } else {
+        return res.status(500).json({ message: ' unable to find the battery' });
+    }
+});
 
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
@@ -94,14 +107,18 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
 
         if (existingBattery) {
             // Update the values
-            if (currentRoomTemp !== undefined) existingBattery.currentRoomTemp = currentRoomTemp;
-            if (currentInternalTemp !== undefined) existingBattery.currentInternalTemp = currentInternalTemp;
-            if (setRoomTemp !== undefined) existingBattery.setRoomTemp = setRoomTemp;
-            if (heatingRoom !== undefined) existingBattery.heatingRoom = heatingRoom;
-            if (ChargingBoolean !== undefined) existingBattery.ChargingBoolean = ChargingBoolean;
+            if (currentRoomTemp !== undefined)
+                existingBattery.currentRoomTemp = currentRoomTemp;
+            if (currentInternalTemp !== undefined)
+                existingBattery.currentInternalTemp = currentInternalTemp;
+            if (setRoomTemp !== undefined)
+                existingBattery.setRoomTemp = setRoomTemp;
+            if (heatingRoom !== undefined)
+                existingBattery.heatingRoom = heatingRoom;
+            if (ChargingBoolean !== undefined)
+                existingBattery.ChargingBoolean = ChargingBoolean;
 
-            // Save the updated battery back to the database
-            await existingBattery.save();
+            await existingBattery.save(); // save changes to found battery
 
             return res.status(200).json({ message: 'Battery updated successfully' });
         } else {
