@@ -92,7 +92,6 @@ app.post('/registerBattery', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: 'Error registering TDES', error });
         }
-    }
 });
 
 // Check if batteryID already exists
