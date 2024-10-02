@@ -77,9 +77,11 @@ app.post('/registerBattery', async (req, res) => {
     try {
         const existingBattery = await SandBattery.findOne({ batteryID }); // checking if battery exists
         if (existingBattery) {
+            console.log("found TDES: "+batteryID);
             const cleanedEmail = user.trim().toLowerCase();
             const existingUser = await User.findOne({ cleanedEmail }); // searches for user
             if (existingUser) {
+                console.log("found user: " + existingUser);
                 existingUser.thermalStorageUnits = batteryID;
                 existingBattery.name = name;
                 await existingUser.save();
