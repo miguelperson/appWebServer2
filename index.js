@@ -87,7 +87,10 @@ app.post('/registerBattery', async (req, res) => {
                 return res.status(200).json({ message: 'Battery Successfully Registered' });
             }
         } else {
-            return res.status(500).json({message: 'Battery Not Found'})
+            return res.status(500).json({ message: 'Battery Not Found' })
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error registering TDES', error });
         }
     }
 });
