@@ -72,12 +72,12 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
 });
 
 app.post('/registerBattery', async (req, res) => {
-    const { name, batteryID, userAccount } = req.body;
-    console.log(name +" "+ batteryID +" "+ userAccount);
+    const { name, batteryID, user } = req.body;
+    console.log(name + " " + batteryID + " " + user);
     try {
         const existingBattery = await SandBattery.findOne({ batteryID }); // checking if battery exists
         if (existingBattery) {
-            const cleanedEmail = userAccount.trim().toLowerCase();
+            const cleanedEmail = user.trim().toLowerCase();
             const existingUser = await User.findOne({ cleanedEmail }); // searches for user
             if (existingUser) {
                 existingUser.thermalStorageUnits = batteryID;
