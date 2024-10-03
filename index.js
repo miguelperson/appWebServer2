@@ -138,6 +138,28 @@ app.get('/batteryStatus', async (req, res) => {
     }
 });
 
+app.get('/checkBattery', async (req, res) => {
+    const { batteryID } = req.query;
+    try {
+        const battery = await SandBattery.findOne({ batteryID });
+        if (!battery) {
+            console.log("error finding battery to toggle");
+            return res.status(404).json({ message: 'Battery not foudn in checkBattery' });
+        }
+        const heatingToggleFlag = battery.heatingToggleFlag; // storing values of the flags
+        const chargingToggleFlag = battery.chargingToggleFlag;
+
+        battery.heatingToggleFlag = false;
+        battery.chargingToggleFlag = false;
+        await battery.save(); // resetting battery flags
+
+        return res.status(200).json({ // return everything
+            heatingToggleFlag: heatingToggleFlag,
+            chargingToggleFlag: chargingToggleFlag
+        })
+    }
+});
+
 app.post('/appHeatToggle', async (req, res) => { // toggle for the 
     const { batteryID, chargingToggleFlag } = req.body; // given ID to find and then given the value for the toggle flag
     const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
