@@ -128,7 +128,7 @@ app.get('/batteryStatus', async (req, res) => {
             return res.status(404).json({ message: 'No battery foudn' });
 
         res.json({ // this goes back to the andorid
-            batteryName: battery.name,
+            batteryName: user.thermalStorageUnits,
             currentInternalTemp: battery.currentInternalTemp,
             currentRoomTemp: battery.currentRoomTemp
         });
