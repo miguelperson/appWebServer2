@@ -96,17 +96,6 @@ app.post('/registerBattery', async (req, res) => {
         }
 });
 
-app.get('/nameGetter', async (req, res) => { // for landing page TDES name
-    const { email } = req.body; // going to search database for this user specifically
-    try {
-        const cleanedEmail = user.trim().toLowerCase();
-        const existingUser = await User.findOne({ email: cleanedEmail });
-        return res.status(200).json({ message: existingUser.thermalStorageUnits });
-    } catch (error) {
-        return res.status(500).json({ message: 'cannot find battery', error });
-    }
-})
-
 // Check if batteryID already exists
 app.get('/checkBattery', async (req, res) => {
     const { batteryID } = req.body; // Get batteryID from the query string
@@ -119,6 +108,32 @@ app.get('/checkBattery', async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json({ message: 'Error searching for battery', error });
+    }
+});
+
+app.get('/batteryStatus', async (req, res) => {
+    const { email } = req.query;
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user)
+            return res.status(404).json({ message: 'User cannot be foudn' });
+
+        const batteryID = user.thermalStorageUnits;
+        if (!batteryID)
+            return res.status(404).json({ message: 'No battery linked' });
+
+        const battery = await SandBattery.findOne({ batteryID: batteryID }); // searching battery ID's for the batteryID variable
+        if (!battery)
+            return res.status(404).json({ message: 'No battery foudn' });
+
+        res.json({
+            batteryName: battery.name,
+            currentInternalTemp: battery.currentInternalTemp,
+            currentRoomTemp: battery.currentRoomTemp
+        });
+    } catch (error) {
+        console.error("Error fetchiing battery status: ", error);
+        res.status(500).json({ message: 'Error fetching battery status', error });
     }
 });
 
