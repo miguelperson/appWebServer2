@@ -38,7 +38,8 @@ const sandBatterySchema = new mongoose.Schema({
     startHeatingMinute: Number,
     stopHeatingMinute: Number,
     heatingToggleFlag: Boolean,
-    chargingToggleFlag: Boolean
+    chargingToggleFlag: Boolean,
+    name: String
     // going to want to add toggle flags for the sand battery
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
@@ -126,7 +127,7 @@ app.get('/batteryStatus', async (req, res) => {
         if (!battery)
             return res.status(404).json({ message: 'No battery foudn' });
 
-        res.json({
+        res.json({ // this goes back to the andorid
             batteryName: battery.name,
             currentInternalTemp: battery.currentInternalTemp,
             currentRoomTemp: battery.currentRoomTemp
