@@ -119,7 +119,7 @@ app.get('/batteryStatus', async (req, res) => {
         if (!user)
             return res.status(404).json({ message: 'User cannot be foudn' });
 
-        const batteryID = user.thermalStorageUnits;
+        const batteryID = user.thermalStorageUnits; // technically searching for the battery name but whatever
         if (!batteryID)
             return res.status(404).json({ message: 'No battery linked' });
 
@@ -128,7 +128,7 @@ app.get('/batteryStatus', async (req, res) => {
             return res.status(404).json({ message: 'No battery foudn' });
 
         res.json({ // this goes back to the andorid
-            batteryName: user.thermalStorageUnits,
+            batteryName: battery.name,
             currentInternalTemp: battery.currentInternalTemp,
             currentRoomTemp: battery.currentRoomTemp
         });
