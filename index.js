@@ -206,7 +206,8 @@ app.post('/register', async (req, res) => {
 
     const newUser = new User({
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        thermalStorageUnits: ""
     });
 
     try {
