@@ -159,7 +159,7 @@ app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or
             chargingToggleFlag: chargingToggleFlag
         })
     } catch (error) {
-        res.status(500).json({ message: 'unable figure this out', error });
+        return res.status(500).json({ message: 'unable figure this out', error });
     }
 });
 
