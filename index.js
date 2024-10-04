@@ -142,7 +142,7 @@ app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or
     const { batteryID } = req.query;
     console.log("starting check battery");
     try {
-        const battery = await SandBattery.findOne({ batteryID });
+        const battery = await SandBattery.findOne({ batteryID: batteryID });
         if (!battery) {
             console.log("error finding battery to toggle");
             return res.status(404).json({ message: 'Battery not foudn in checkBattery' });
