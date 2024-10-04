@@ -140,6 +140,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
 
 app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or charging toggle was activated
     const { batteryID } = req.query;
+    console.log("starting check battery");
     try {
         const battery = await SandBattery.findOne({ batteryID });
         if (!battery) {
@@ -191,6 +192,7 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+    console.log("starting battery Update");
 
     try {
         // Find the existing battery by batteryID
