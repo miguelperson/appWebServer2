@@ -127,7 +127,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
         if (!battery)
             return res.status(404).json({ message: 'No battery foudn' });
 
-        console.log("room temp set is " + battery.setRoomTemp);
+        // console.log("room temp set is " + battery.setRoomTemp);
 
         res.json({ // this goes back to the andorid, might have to update for the future front end development
             batteryName: battery.name,
