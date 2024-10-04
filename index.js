@@ -197,7 +197,7 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
         existingBattery.chargingToggleFlag = true; // raise heating flag
         await existingBattery.save();
         const flip = !existingBattery.ChargingBoolean;
-        return res.status(200).json({ message: flip.toString() }); // want to get invesrse maybe?
+        return res.status(200).json({ message: flip.toString() }); // notifies app of the current charging state
     } else {
         return res.status(500).json({ message: ' unable to find the battery' });
     }
