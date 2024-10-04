@@ -164,7 +164,7 @@ app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or
 
 app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating status
     const { user } = req.body; // given ID to find and then given the value for the toggle flag
-    const userObject = await User.findOne({ user });
+    const userObject = await User.findOne({ email: user }); // added type to email
     const batteryID = userObject.thermalStorageUnits
     const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
 
