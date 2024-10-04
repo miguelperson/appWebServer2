@@ -178,9 +178,9 @@ app.post('/appHeatToggle', async (req, res) => { // app toggle for current heati
     const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
 
     if (existingBattery) {
-        existingBattery.chargingToggleFlag = true; // raise heating flag
+        existingBattery.heatingToggleFlag = true; // raise heating flag
         await existingBattery.save();
-        return res.status(200).json({ message: 'heat toggle set to:' + existingBattery.chargingToggleFlag });
+        return res.status(200).json({ message: 'heat toggle set to:' + existingBattery.heatingToggleFlag });
     } else {
         return res.status(500).json({ message: ' unable to find the battery' });
     }
