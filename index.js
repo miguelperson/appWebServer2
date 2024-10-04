@@ -180,7 +180,8 @@ app.post('/appHeatToggle', async (req, res) => { // app toggle for current heati
     if (existingBattery) {
         existingBattery.heatingToggleFlag = true; // raise heating flag
         await existingBattery.save();
-        return res.status(200).json({ message: 'heat toggle set to:' + existingBattery.heatingToggleFlag });
+        const flip = !existingBattery.heatingToggleFlag;
+        return res.status(200).json({ message: flip.toString() });
     } else {
         return res.status(500).json({ message: ' unable to find the battery' });
     }
