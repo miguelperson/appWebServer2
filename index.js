@@ -112,7 +112,7 @@ app.get('/checkBattery', async (req, res) => {
     }
 });
 
-app.get('/batteryStatus', async (req, res) => {
+app.get('/batteryStatus', async (req, res) => { // will need expansion for future cosmetic shit
     const { email } = req.query;
     try {
         const user = await User.findOne({ email: email });
@@ -127,7 +127,7 @@ app.get('/batteryStatus', async (req, res) => {
         if (!battery)
             return res.status(404).json({ message: 'No battery foudn' });
 
-        res.json({ // this goes back to the andorid
+        res.json({ // this goes back to the andorid, might have to update for the future front end development
             batteryName: battery.name,
             currentInternalTemp: battery.currentInternalTemp,
             currentRoomTemp: battery.currentRoomTemp
@@ -138,7 +138,7 @@ app.get('/batteryStatus', async (req, res) => {
     }
 });
 
-app.get('/checkBattery', async (req, res) => {
+app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or charging toggle was activated
     const { batteryID } = req.query;
     try {
         const battery = await SandBattery.findOne({ batteryID });
@@ -157,16 +157,21 @@ app.get('/checkBattery', async (req, res) => {
             heatingToggleFlag: heatingToggleFlag,
             chargingToggleFlag: chargingToggleFlag
         })
+    } catch (error) {
+        res.status(500).json({ message: 'unable figure this out', error });
     }
 });
 
-app.post('/appHeatToggle', async (req, res) => { // toggle for the 
-    const { batteryID, chargingToggleFlag } = req.body; // given ID to find and then given the value for the toggle flag
+app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating status
+    const { user } = req.body; // given ID to find and then given the value for the toggle flag
+    const userObject = await User.findOne({ user });
+    const batteryID = userObject.thermalStorageUnits
     const existingBattery = await SandBattery.findOne({ batteryID }); // finds the battery in the database
+
     if (existingBattery) {
-        existingBattery.chargingToggleFlag = !existingBattery.chargingToggleFlag; // toggle the heating flag
+        existingBattery.chargingToggleFlag = true; // raise heating flag
         await existingBattery.save();
-        return res.status(200).json({ message: 'toggle set to:' + existingBattery.chargingToggleFlag });
+        return res.status(200).json({ message: 'heat toggle set to:' + existingBattery.chargingToggleFlag });
     } else {
         return res.status(500).json({ message: ' unable to find the battery' });
     }
