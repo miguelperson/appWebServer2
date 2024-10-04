@@ -138,30 +138,38 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
     }
 });
 
-app.get('/checkBattery', async (req, res) => { // ESP32 checks if the heating or charging toggle was activated
-    const { batteryID } = req.query;
-    console.log("starting check battery");
+app.get('/checkBattery', async (req, res) => {
+    const { batteryID } = req.query; // Only extract from query
+    console.log("Received request to checkBattery for batteryID: ", batteryID);
+
     try {
-        const battery = await SandBattery.findOne({ batteryID: batteryID });
+        const battery = await SandBattery.findOne({ batteryID });
         if (!battery) {
-            console.log("error finding battery to toggle");
-            return res.status(404).json({ message: 'Battery not foudn in checkBattery' });
+            console.log("Battery not found");
+            return res.status(404).json({ exists: false, message: 'Battery not found' });
         }
-        const heatingToggleFlag = battery.heatingToggleFlag; // storing values of the flags
+
+        const heatingToggleFlag = battery.heatingToggleFlag;
         const chargingToggleFlag = battery.chargingToggleFlag;
 
+        // Reset the flags
         battery.heatingToggleFlag = false;
         battery.chargingToggleFlag = false;
-        await battery.save(); // resetting battery flags
+        await battery.save();
 
-        return res.status(200).json({ // return everything
+        // Return JSON response
+        return res.status(200).json({
+            exists: true,
             heatingToggleFlag: heatingToggleFlag,
             chargingToggleFlag: chargingToggleFlag
-        })
+        });
+
     } catch (error) {
-        return res.status(500).json({ message: 'unable figure this out', error });
+        console.error("Error checking battery: ", error);
+        return res.status(500).json({ exists: false, message: 'Error checking battery', error: error.toString() });
     }
 });
+
 
 app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating status
     const { user } = req.body; // given ID to find and then given the value for the toggle flag
