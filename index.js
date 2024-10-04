@@ -138,7 +138,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
     }
 });
 
-app.get('/checkBattery', async (req, res) => {
+app.get('/TDESToggleCheck', async (req, res) => {
     const { batteryID } = req.query; // Only extract from query
     console.log("Received request to checkBattery for batteryID: ");
 
