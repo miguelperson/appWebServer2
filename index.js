@@ -171,7 +171,7 @@ app.get('/TDESToggleCheck', async (req, res) => {
 });
 
 
-app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating status
+app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating statusa
     const { user } = req.body; // given ID to find and then given the value for the toggle flag
     const userObject = await User.findOne({ email: user }); // added type to email
     const batteryID = userObject.thermalStorageUnits
@@ -195,7 +195,7 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
     if (existingBattery) {
         existingBattery.chargingToggleFlag = true; // raise heating flag
         await existingBattery.save();
-        return res.status(200).json({ message: 'heat toggle set to:' + existingBattery.chargingToggleFlag });
+        return res.status(200).json({ message: existingBattery.chargingToggleFlag.toString() });
     } else {
         return res.status(500).json({ message: ' unable to find the battery' });
     }
