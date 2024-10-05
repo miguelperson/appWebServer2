@@ -291,7 +291,7 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
                 existingBattery.stopHeatingMinute = 0;
                 existingBattery.startChargingMinute = 0;
                 existingBattery.stopChargingMinute = 0;
-            }
+            } // last if statement just to reset the minutes of all the components
 
             await existingBattery.save(); // save changes to found battery
 
