@@ -190,6 +190,32 @@ app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     }
 });
 
+app.get('/TDESGetSchedule', async (req, res) => {
+    const { batteryID } = req.query;
+    try {
+        const battery = await SandBattery.findOne({ batteryID });
+        if (!battery) {
+            console.log("couldnt' find battery for schedule");
+            return res.status(404).json({ exists: false, message: "battery not foudn for schedule" });
+        }
+        const heatStartHour = battery.startHeatingHour;
+        const heatEndHour = battery.endHeatingHour;
+        const startHeatingHour = battery.startHeatingHour;
+        const endHeatingHour = battery.stopHeatingMinute;
+
+        const startChargingHour = battery.startChargingHour;
+        const endChargingHour = battery.endChargingHour;
+        const starChargingMinute = battery.startChargingMinute;
+        const endChargingMinute = battery.endChargingMinute;
+
+
+    } catch (error) {
+        console.error("Error Getting Schedule", error);
+        return res.status(500).json({ exists: false, message: 'Error getting schedule', error: error.toString() });
+
+    }
+});
+
 
 app.post('/appHeatToggle', async (req, res) => { // app toggle for current heating statusa
     const { user } = req.body; // given ID to find and then given the value for the toggle flag
