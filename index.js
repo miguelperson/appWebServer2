@@ -198,7 +198,7 @@ app.get('/TDESGetSchedule', async (req, res) => {
             console.log("couldnt' find battery for schedule");
             return res.status(404).json({ exists: false, message: "battery not foudn for schedule" });
         }
-        const heatStartHour = battery.startHeatingHour;
+        const heatStartHour = battery.startHeatingHour; // times have to be in military time
         const heatEndHour = battery.endHeatingHour;
         const startHeatingHour = battery.startHeatingHour;
         const endHeatingHour = battery.stopHeatingMinute;
