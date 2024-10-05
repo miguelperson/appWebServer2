@@ -39,7 +39,8 @@ const sandBatterySchema = new mongoose.Schema({
     stopHeatingMinute: Number,
     heatingToggleFlag: Boolean,
     chargingToggleFlag: Boolean,
-    name: String
+    name: String,
+    schedulingFlag: Boolean
     // going to want to add toggle flags for the sand battery
 });
 const SandBattery = mongoose.model('SandBattery', sandBatterySchema, 'sandBatteries');
@@ -62,7 +63,8 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
         startHeatingMInute,
         stopHeatingMinute,
         heatingToggleFlag,
-        chargingToggleFlag
+        chargingToggleFlag,
+        schedulingFlag
     });
     try {
         await additionalBattery.save();
@@ -141,7 +143,14 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
     }
 });
 
-app.get('/TDESToggleCheck', async (req, res) => {
+
+    //    startHeatingHour: Number,
+      //      endHeatingHour: Number,
+          //          stopChargingMinute: Number,
+            //            startHeatingMinute: Number,
+              //              stopHeatingMinute: Number,
+
+app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     const { batteryID } = req.query; // Only extract from query
     console.log("Received request to checkBattery for batteryID: ");
 
@@ -154,17 +163,25 @@ app.get('/TDESToggleCheck', async (req, res) => {
 
         const heatingToggleFlag = battery.heatingToggleFlag;
         const chargingToggleFlag = battery.chargingToggleFlag;
+        const scheduleFlag = battery.scheduleFlag;
+
+        // const startChargingHour = battery.startChargingHour;
+        //const startChargingMinute = battery.startChargingMinute;
+        //const stopChargingHour = battery.endChargingHour;
+        //const stopChargingMinute = battery.stopChargingMinute;
 
         // Reset the flags
         battery.heatingToggleFlag = false;
         battery.chargingToggleFlag = false;
+        battery.scheduleFlag = false;
         await battery.save();
 
         // Return JSON response
         return res.status(200).json({
             exists: true,
             heatingToggleFlag: heatingToggleFlag,
-            chargingToggleFlag: chargingToggleFlag
+            chargingToggleFlag: chargingToggleFlag,
+            scheduleFlag: scheduleFlag
         });
 
     } catch (error) {
