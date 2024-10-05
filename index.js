@@ -219,8 +219,6 @@ app.get('/TDESGetSchedule', async (req, res) => {
             startChargingMinute: startChargingMinute,
             endChargingMinute: endChargingMinute
         })
-
-
     } catch (error) {
         console.error("Error Getting Schedule", error);
         return res.status(500).json({ exists: false, message: 'Error getting schedule', error: error.toString() });
@@ -262,7 +260,7 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 });
 
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean } = req.body;
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
     console.log("starting battery Update");
 
     try {
@@ -281,6 +279,19 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
                 existingBattery.heatingRoom = heatingRoom;
             if (ChargingBoolean !== undefined)
                 existingBattery.ChargingBoolean = ChargingBoolean;
+            if (finalStartHeating !== undefined)
+                existingBattery.finalStartHeating = finalStartHeating;
+            if (finalEndHeating !== undefined)
+                existingBattery.finalEndHeating = finalEndHeating;
+            if (finalStartCharging !== undefined)
+                existingBattery.finalStartCharging = finalStartCharging;
+            if (finalEndCharging !== undefined) {
+                existingBattery.finalEndCharging = finalEndCharging;
+                existingBattery.startHeatingMinute = 0;
+                existingBattery.stopHeatingMinute = 0;
+                existingBattery.startChargingMinute = 0;
+                existingBattery.stopChargingMinute = 0;
+            }
 
             await existingBattery.save(); // save changes to found battery
 
