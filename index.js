@@ -205,14 +205,19 @@ app.get('/TDESGetSchedule', async (req, res) => {
 
         const startChargingHour = battery.startChargingHour;
         const endChargingHour = battery.endChargingHour;
-        const starChargingMinute = battery.startChargingMinute;
+        const startChargingMinute = battery.startChargingMinute;
         const endChargingMinute = battery.endChargingMinute;
 
         return res.status(200).json({
             exists: true,
             heatStartHour: heatStartHour,
             heatEndHour: heatEndHour,
-
+            startheatingMinute: startHeatingMinute,
+            stopHeatingMinute: stopHeatingMinute,
+            startChargingHour: startChargingHour,
+            endChargingHour: endChargingHour,
+            startChargingMinute: startChargingMinute,
+            endChargingMinute: endChargingMinute
         })
 
 
