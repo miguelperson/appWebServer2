@@ -263,12 +263,12 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
-    console.log("starting battery Update");
-    console.log('battery id is: ' + batteryID);
-    console.log(finalStartHeating);
-    console.log(finalEndHeating);
-    console.log(finalStartCharging);
-    console.log(finalEndCharging);
+    //console.log("starting battery Update");
+    //console.log('battery id is: ' + batteryID);
+    //console.log(finalStartHeating);
+    //console.log(finalEndHeating);
+    //console.log(finalStartCharging);
+    //console.log(finalEndCharging);
 
     try {
         // Find the existing battery by batteryID
