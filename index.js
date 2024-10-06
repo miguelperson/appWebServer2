@@ -152,7 +152,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
 
 app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     const { batteryID } = req.query; // Only extract from query
-    console.log("Received request to checkBattery for batteryID: ");
+    // console.log("Received request to checkBattery for batteryID: ");
 
     try {
         const battery = await SandBattery.findOne({ batteryID });
@@ -262,7 +262,11 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
     console.log("starting battery Update");
+    console.log('battery id is: ' + batteryID);
     console.log(finalStartHeating);
+    console.log(finalEndHeating);
+    console.log(finalStartCharging);
+    console.log(finalEndCharging);
 
     try {
         // Find the existing battery by batteryID
