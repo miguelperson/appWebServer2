@@ -259,6 +259,8 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
     }
 });
 
+
+
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
     console.log("starting battery Update");
@@ -285,14 +287,14 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
             if (ChargingBoolean !== undefined)
                 existingBattery.ChargingBoolean = ChargingBoolean;
             if (finalStartHeating !== undefined)
-                existingBattery.finalStartHeating = finalStartHeating;
+                existingBattery.startHeatingHour = finalStartHeating;
             if (finalEndHeating !== undefined)
-                existingBattery.finalEndHeating = finalEndHeating;
+                existingBattery.endHeatingHour = finalEndHeating;
             if (finalStartCharging !== undefined)
-                existingBattery.finalStartCharging = finalStartCharging;
+                existingBattery.startChargingHour = finalStartCharging;
             if (finalEndCharging !== undefined) {
-                existingBattery.finalEndCharging = finalEndCharging;
-                existingBattery.startHeatingMinute = 0;
+                existingBattery.endChargingHour = finalEndCharging;
+                existingBattery.startHeatingMInute = 0;
                 existingBattery.stopHeatingMinute = 0;
                 existingBattery.startChargingMinute = 0;
                 existingBattery.stopChargingMinute = 0;
