@@ -358,7 +358,6 @@ app.post('/appScheduleCreator', async (req, res) => {
     } = req.body;
     console.log('searching accoutn');
     const account = await User.findOne({ user }); // finding the user
-    console.log(account.email);
 
 
     try {
