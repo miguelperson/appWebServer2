@@ -173,7 +173,7 @@ app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
         // Reset the flags
         battery.heatingToggleFlag = false;
         battery.chargingToggleFlag = false;
-        battery.scheduleFlag = false;
+        battery.schedulingFlag = false;
         await battery.save();
 
         // Return JSON response
