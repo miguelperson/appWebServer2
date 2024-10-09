@@ -60,7 +60,7 @@ app.post('/newBattery', async (req, res) => { // api end point used by ESP32-WRO
         endHeatingHour,
         startChargingMinute,
         stopChargingMinute,
-        startHeatingMInute,
+        startHeatingMinute,
         stopHeatingMinute,
         heatingToggleFlag,
         chargingToggleFlag,
@@ -201,7 +201,7 @@ app.get('/TDESGetSchedule', async (req, res) => {
         }
         const heatStartHour = battery.startHeatingHour; // times have to be in military time
         const heatEndHour = battery.endHeatingHour;
-        const startHeatingMinute = battery.startHeatingMInute;
+        const startHeatingMinute = battery.startHeatingMinute;
         const stopHeatingMinute = battery.stopHeatingMinute;
 
         const startChargingHour = battery.startChargingHour;
@@ -295,7 +295,7 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
                 existingBattery.startChargingHour = finalStartCharging;
             if (finalEndCharging !== undefined) {
                 existingBattery.endChargingHour = finalEndCharging;
-                existingBattery.startHeatingMInute = 0;
+                existingBattery.startHeatingMinute = 0;
                 existingBattery.stopHeatingMinute = 0;
                 existingBattery.startChargingMinute = 0;
                 existingBattery.stopChargingMinute = 0;
