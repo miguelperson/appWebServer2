@@ -357,9 +357,11 @@ app.post('appScheduleCreator', (req, res) => {
         heatingEndMinute
     } = req.body;
 
+    const account = await User.findOne({ email: user }); // finding the user
+
+
     try {
 
-        const account = await User.findOne({ email: user }); // finding the user
         batteryID = account.batteryID; // gets the batteryID saved to the user object
         const battery = await SandBattery.findOne({ batteryID }); // retireve battery
         battery.startChargingHour = chargeStartHour;
