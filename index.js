@@ -344,7 +344,7 @@ app.get('/test', (req, res) => {
 });
 
 
-app.post('appScheduleCreator', (req, res) => {
+app.post('/appScheduleCreator', async (req, res) => {
     const {
         user,
         chargeStartHour,
