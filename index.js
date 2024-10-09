@@ -359,11 +359,12 @@ app.post('/appScheduleCreator', async (req, res) => {
     console.log('searching accoutn');
     console.log(user);
     const account = await User.findOne({ email: user }); // finding the user
+    batteryID = account.batteryID; // gets the batteryID saved to the user object
+
     if (account) {
 
         try {
 
-            batteryID = account.batteryID; // gets the batteryID saved to the user object
             console.log("battery ID: " + batteryID);
             const battery = await SandBattery.findOne({ batteryID }); // retireve battery
             battery.startChargingHour = chargeStartHour;
