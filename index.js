@@ -356,39 +356,53 @@ app.post('/appScheduleCreator', async (req, res) => {
         heatingEndHour,
         heatingEndMinute
     } = req.body;
-    console.log('searching accoutn');
-    console.log(user);
-    const account = await User.findOne({ email: user }); // finding the user
-    batteryID = account.batteryID; // gets the batteryID saved to the user object
 
-    if (account) {
+    console.log('Searching for account with email:', user);
 
-        try {
+    try {
+        const account = await User.findOne({ email: user }); // finding the user
 
-            console.log("battery ID: " + batteryID);
-            const battery = await SandBattery.findOne({ batteryID }); // retireve battery
-            battery.startChargingHour = chargeStartHour;
-            battery.startChargingMinute = chargeStartMinute;
-            battery.endChargingHour = chargeEndHour;
-            battery.stopChargingMinute = chargeEndMinute;
-            battery.startHeatingHour = heatingStartHour;
-            battery.startHeatingMinute = heatingStartMinute;
-            battery.endHeatingHour = heatingEndHour;
-            battery.stopHeatingMinute = heatingEndMinute;
-            await battery.save();
-
-            return res.status(200).json({ message: 'Battery updated successfully' });
-        } catch (error) {
-            return res.status(500).json({ message: 'Error updating Schedule', error });
-
+        if (!account) {
+            console.log("User not found");
+            return res.status(404).json({ message: "User not found" });
         }
 
-    } else {
-        console.log("user not foudn");
+        const batteryID = account.batteryID; // gets the batteryID saved to the user object
+
+        if (!batteryID) {
+            console.log("No battery ID found for user:", user);
+            return res.status(404).json({ message: "Battery ID not found" });
+        }
+
+        console.log("Battery ID found:", batteryID);
+
+        const battery = await SandBattery.findOne({ batteryID }); // retrieve battery
+
+        if (!battery) {
+            console.log("Battery not found for battery ID:", batteryID);
+            return res.status(404).json({ message: "Battery not found" });
+        }
+
+        // Updating the battery schedule
+        battery.startChargingHour = chargeStartHour;
+        battery.startChargingMinute = chargeStartMinute;
+        battery.endChargingHour = chargeEndHour;
+        battery.stopChargingMinute = chargeEndMinute;
+        battery.startHeatingHour = heatingStartHour;
+        battery.startHeatingMinute = heatingStartMinute;
+        battery.endHeatingHour = heatingEndHour;
+        battery.stopHeatingMinute = heatingEndMinute;
+
+        await battery.save();
+
+        return res.status(200).json({ message: 'Battery updated successfully' });
+
+    } catch (error) {
+        console.error("Error updating Schedule:", error);
+        return res.status(500).json({ message: 'Error updating Schedule', error });
     }
-
-
 });
+
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
