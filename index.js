@@ -343,6 +343,25 @@ app.get('/test', (req, res) => {
     res.send('Server is reachable and running');
 });
 
+app.post('appScheduleCreator', (req, res) => {
+    const {
+        user,
+        chargeStartHour,
+        chargeStartMinute,
+        chargeEndHour,
+        chargeEndMinute,
+        heatingStartHour,
+        heatingStartMinute,
+        heatingEndHour,
+        heatingEndMinute
+    } = req.body;
+
+    const user = await User.findOne({ email: user }); // finding the user
+    batteryID = user.batteryID; // gets the batteryID saved to the user object
+    const battery = await SandBattery.findOne({ batteryID }); // retrieve sand battery object
+    battery.scheduleFlag = true; // raise scheduling flag
+});
+
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
