@@ -343,6 +343,7 @@ app.get('/test', (req, res) => {
     res.send('Server is reachable and running');
 });
 
+
 app.post('appScheduleCreator', (req, res) => {
     const {
         user,
@@ -356,10 +357,27 @@ app.post('appScheduleCreator', (req, res) => {
         heatingEndMinute
     } = req.body;
 
-    const user = await User.findOne({ email: user }); // finding the user
-    batteryID = user.batteryID; // gets the batteryID saved to the user object
-    const battery = await SandBattery.findOne({ batteryID }); // retrieve sand battery object
-    battery.scheduleFlag = true; // raise scheduling flag
+    try {
+
+        const user = await User.findOne({ email: user }); // finding the user
+        batteryID = user.batteryID; // gets the batteryID saved to the user object
+        const battery = await SandBattery.findOne({ batteryID }); // retireve battery
+        battery.startChargingHour = chargeStartHour;
+        battery.startChargingMinute = chargeStartMinute;
+        battery.endChargingHour = chargeEndHour;
+        battery.stopChargingMinute = chargeEndMinute;
+        battery.startHeatingHour = heatingStartHour;
+        battery.startHeatingMinute = heatingStartMinute;
+        battery.endHeatingHour = heatingEndHour;
+        battery.stopHeatingMinute = heatingEndMinute;
+        await battery.save();
+
+        return res.status(200).json({ message: 'Battery updated successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error updating Schedule', error });
+
+    }
+
 });
 
 app.post('/login', async (req, res) => {
