@@ -135,7 +135,15 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
             batteryName: battery.name,
             currentInternalTemp: battery.currentInternalTemp,
             currentRoomTemp: battery.currentRoomTemp,
-            setRoomTemp: battery.setRoomTemp
+            setRoomTemp: battery.setRoomTemp,
+            startChargingHour: battery.startChargingHour,
+            endChargingHour: battery.endChargingHour,
+            startHeatingHour: battery.startHeatingHour,
+            endHeatingHour: battery.endHeatingHour,
+            startChargingMinute: battery.startChargingMinute,
+            stopHeatingMinute: battery.stopHeatingMinute,
+            startHeatingMinute: battery.startHeatingMinute,
+            stopChargingminute: battery.stopChargingMinute
         });
     } catch (error) {
         console.error("Error fetchiing battery status: ", error);
