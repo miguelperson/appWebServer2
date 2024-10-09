@@ -358,27 +358,30 @@ app.post('/appScheduleCreator', async (req, res) => {
     } = req.body;
     console.log('searching accoutn');
     const account = await User.findOne({ user }); // finding the user
+    if (account) {
 
+        try {
 
-    try {
+            batteryID = account.batteryID; // gets the batteryID saved to the user object
+            const battery = await SandBattery.findOne({ batteryID }); // retireve battery
+            battery.startChargingHour = chargeStartHour;
+            battery.startChargingMinute = chargeStartMinute;
+            battery.endChargingHour = chargeEndHour;
+            battery.stopChargingMinute = chargeEndMinute;
+            battery.startHeatingHour = heatingStartHour;
+            battery.startHeatingMinute = heatingStartMinute;
+            battery.endHeatingHour = heatingEndHour;
+            battery.stopHeatingMinute = heatingEndMinute;
+            await battery.save();
 
-        batteryID = account.batteryID; // gets the batteryID saved to the user object
-        const battery = await SandBattery.findOne({ batteryID }); // retireve battery
-        battery.startChargingHour = chargeStartHour;
-        battery.startChargingMinute = chargeStartMinute;
-        battery.endChargingHour = chargeEndHour;
-        battery.stopChargingMinute = chargeEndMinute;
-        battery.startHeatingHour = heatingStartHour;
-        battery.startHeatingMinute = heatingStartMinute;
-        battery.endHeatingHour = heatingEndHour;
-        battery.stopHeatingMinute = heatingEndMinute;
-        await battery.save();
+            return res.status(200).json({ message: 'Battery updated successfully' });
+        } catch (error) {
+            return res.status(500).json({ message: 'Error updating Schedule', error });
 
-        return res.status(200).json({ message: 'Battery updated successfully' });
-    } catch (error) {
-        return res.status(500).json({ message: 'Error updating Schedule', error });
+        }
 
     }
+
 
 });
 
