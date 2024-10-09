@@ -380,6 +380,8 @@ app.post('/appScheduleCreator', async (req, res) => {
 
         }
 
+    } else {
+        console.log("user not foudn");
     }
 
 
