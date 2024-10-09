@@ -357,7 +357,7 @@ app.post('/appScheduleCreator', async (req, res) => {
         heatingEndMinute
     } = req.body;
     console.log('searching accoutn');
-    const account = await User.findOne({ user }); // finding the user
+    const account = await User.findOne({ email: user }); // finding the user
     if (account) {
 
         try {
