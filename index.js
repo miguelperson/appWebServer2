@@ -373,6 +373,7 @@ app.post('/appScheduleCreator', async (req, res) => {
             battery.startHeatingMinute = heatingStartMinute;
             battery.endHeatingHour = heatingEndHour;
             battery.stopHeatingMinute = heatingEndMinute;
+            battery.scheduleFlag = true;
             await battery.save();
 
             return res.status(200).json({ message: 'Battery updated successfully' });
