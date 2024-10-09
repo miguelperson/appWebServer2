@@ -163,7 +163,7 @@ app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
 
         const heatingToggleFlag = battery.heatingToggleFlag;
         const chargingToggleFlag = battery.chargingToggleFlag;
-        const scheduleFlag = battery.scheduleFlag;
+        const scheduleFlag = battery.schedulingFlag;
 
         // const startChargingHour = battery.startChargingHour;
         //const startChargingMinute = battery.startChargingMinute;
@@ -373,7 +373,7 @@ app.post('/appScheduleCreator', async (req, res) => {
             battery.startHeatingMinute = heatingStartMinute;
             battery.endHeatingHour = heatingEndHour;
             battery.stopHeatingMinute = heatingEndMinute;
-            battery.scheduleFlag = true;
+            battery.schedulingFlag = true;
             await battery.save();
 
             return res.status(200).json({ message: 'Battery updated successfully' });
