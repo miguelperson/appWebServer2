@@ -190,6 +190,7 @@ app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     }
 });
 
+
 app.get('/TDESGetSchedule', async (req, res) => {
     const { batteryID } = req.query;
     try {
@@ -200,13 +201,13 @@ app.get('/TDESGetSchedule', async (req, res) => {
         }
         const heatStartHour = battery.startHeatingHour; // times have to be in military time
         const heatEndHour = battery.endHeatingHour;
-        const startHeatingMinute = battery.startHeatingMinute;
+        const startHeatingMinute = battery.startHeatingMInute;
         const stopHeatingMinute = battery.stopHeatingMinute;
 
         const startChargingHour = battery.startChargingHour;
         const endChargingHour = battery.endChargingHour;
         const startChargingMinute = battery.startChargingMinute;
-        const endChargingMinute = battery.endChargingMinute;
+        const endChargingMinute = battery.stopChargingMinute;
 
         return res.status(200).json({
             exists: true,
