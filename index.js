@@ -160,7 +160,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
 
 app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     const { batteryID } = req.query; // Only extract from query
-    // console.log("Received request to checkBattery for batteryID: ");
+    console.log("Received request to checkBattery for batteryID: ");
 
     try {
         const battery = await SandBattery.findOne({ batteryID });
@@ -203,6 +203,7 @@ app.get('/TDESGetSchedule', async (req, res) => {
     const { batteryID } = req.query;
     try {
         const battery = await SandBattery.findOne({ batteryID });
+        console.log("battery: " + battery.batteryID+" getting the schedule");
         if (!battery) {
             console.log("couldnt' find battery for schedule");
             return res.status(404).json({ exists: false, message: "battery not foudn for schedule" });
@@ -272,8 +273,8 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
     const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
-    //console.log("starting battery Update");
-    //console.log('battery id is: ' + batteryID);
+    console.log("starting battery Update");
+    console.log('battery id is: ' + batteryID);
     //console.log(finalStartHeating);
     //console.log(finalEndHeating);
     //console.log(finalStartCharging);
