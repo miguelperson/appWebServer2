@@ -270,9 +270,8 @@ app.post('/appChargingToggle', async (req, res) => { // toggle for the
 });
 
 
-
 app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
-    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging  } = req.body;
+    const { batteryID, currentRoomTemp, currentInternalTemp, setRoomTemp, heatingRoom, ChargingBoolean, finalStartHeating, finalEndHeating, finalStartCharging, finalEndCharging, startHeatingMin, endHeatingMin. startChargingMin, endChargingMin  } = req.body;
     console.log("starting battery Update");
     // console.log('battery id is: ' + batteryID);
     //console.log(finalStartHeating);
@@ -304,10 +303,10 @@ app.post('/batteryUpdate', async (req, res) => { // updating values of ESP32
                 existingBattery.startChargingHour = finalStartCharging;
             if (finalEndCharging !== undefined) {
                 existingBattery.endChargingHour = finalEndCharging;
-                existingBattery.startHeatingMinute = 0;
-                existingBattery.stopHeatingMinute = 0;
-                existingBattery.startChargingMinute = 0;
-                existingBattery.stopChargingMinute = 0;
+                existingBattery.startHeatingMinute = startHeatingMin; // replace these with transmitted minute values
+                existingBattery.stopHeatingMinute = endHeatingMin;
+                existingBattery.startChargingMinute = startChargingMin;
+                existingBattery.stopChargingMinute = endChargingMin;
             } // last if statement just to reset the minutes of all the components
 
             await existingBattery.save(); // save changes to found battery
