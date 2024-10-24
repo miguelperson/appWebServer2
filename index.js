@@ -152,11 +152,7 @@ app.get('/batteryStatus', async (req, res) => { // will need expansion for futur
 });
 
 
-    //    startHeatingHour: Number,
-      //      endHeatingHour: Number,
-          //          stopChargingMinute: Number,
-            //            startHeatingMinute: Number,
-              //              stopHeatingMinute: Number,
+
 
 app.get('/TDESToggleCheck', async (req, res) => { // ESP32 code
     const { batteryID } = req.query; // Only extract from query
